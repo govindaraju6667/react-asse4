@@ -6,6 +6,8 @@ const ServerData = () => {
   const [form, setForm] = useState(false);
   const [title, setTitle] = useState("");
   const [newBody, setBody] = useState("");
+  const [id, setId] = useState(0);
+  const [edit, setEdit] = useState(false);
 
   useEffect(() => {
     fetchServerData();
@@ -20,27 +22,45 @@ const ServerData = () => {
       .catch((error) => console.log("Error:", error));
   };
 
-  const handleFormSubmit = () => {
-    const newItem = {
-      title: title,
-      body: newBody,
-    };
+  const handleFormSubmit = (event) => {
+    console.log(event.target);
+    if (event.target.value === "Add") {
+      const newItem = {
+        title: title,
+        body: newBody,
+      };
 
-    axios
-      .post("http://localhost:3030/posts", newItem)
-      .then((response) => {
-        console.log("added:", response.data);
+      axios
+        .post("http://localhost:3030/posts", newItem)
+        .then((response) => {
+          console.log("added:", response.data);
 
-        fetchServerData();
+          fetchServerData();
 
-        setTitle("");
-        setBody("");
-        setForm(false);
-      })
-      .catch((error) => console.error("Error:", error));
+          setTitle("");
+          setBody("");
+
+          setForm(false);
+        })
+        .catch((error) => console.error("Error:", error));
+    } else {
+      const newItem = {
+        title: title,
+        body: newBody,
+      };
+      axios
+        .put(`http://localhost:3030/posts/${id}`, newItem)
+        .then((response) => {
+          fetchServerData();
+          setTitle("");
+          setBody("");
+        });
+      setEdit(false);
+      setForm(false);
+    }
   };
 
-  const handleDeleteClick = (itemId) => {
+  const handleDelete = (itemId) => {
     axios
       .delete(`http://localhost:3030/posts/${itemId}`)
       .then((response) => {
@@ -50,13 +70,24 @@ const ServerData = () => {
       .catch((error) => console.log("Error:", error));
   };
 
+  const handleUpdate = (ele) => {
+    setEdit(true);
+    setTitle(ele.title);
+    setBody(ele.body);
+    setId(ele.id);
+
+    setForm(true);
+  };
+
   return (
     <div className="main">
       <h1 id="data">Json Data</h1>
-      <button onClick={() => setForm(true)}>ADD</button>
+      <button onClick={() => setForm(true)} id="btn">
+        ADD
+      </button>
 
       {form && (
-        <form>
+        <form id="forms">
           <label>
             Title:
             <input
@@ -69,28 +100,38 @@ const ServerData = () => {
 
           <label>
             Body:
-            <input
-              type="text"
+            <textarea
               value={newBody}
               onChange={(e) => setBody(e.target.value)}
             />
           </label>
           <br />
 
-          <button type="button" onClick={handleFormSubmit}>
-            Add
+          <button
+            type="button"
+            onClick={handleFormSubmit}
+            id="add-btn"
+            value={edit ? "update" : "Add"}
+          >
+            {edit ? "update" : "Add"}
           </button>
         </form>
       )}
 
       <ul>
         {data.map((item) => (
-          <li key={item.id}>
-            <h2>{item.title}</h2>
-            <p>{item.body}</p>
-            <button>Add</button>
-            <button onClick={() => handleDeleteClick(item.id)}>Delete</button>
-          </li>
+          <div className="data-list">
+            <li id="list" key={item.id}>
+              <h2 id="title">{item.title}</h2>
+              <p>{item.body}</p>
+              <button id="btns" onClick={() => handleUpdate(item)}>
+                Edit
+              </button>
+              <button id="btns" onClick={() => handleDelete(item.id)}>
+                Delete
+              </button>
+            </li>
+          </div>
         ))}
       </ul>
     </div>

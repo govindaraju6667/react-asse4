@@ -15,10 +15,53 @@ code {
     monospace;
 }
 .main {
-  background-color: antiquewhite;
+  /* background-color: antiquewhite; */
   width: 700px;
-  height:600px;
+  height:auto;
 }
 #data {
   font-size: 35px;
+}
+#btn {
+  width: 80px;
+  height:40px;
+  border-radius: 5px;
+  border: none;
+  background-color: aliceblue;
+  color: blueviolet;
+  margin-bottom: 30px;
+}
+#forms {
+  background-color:aliceblue;
+  width: 300px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  margin: auto;
+}
+#add-btn {
+  background-color: bisque;
+  width: 50px;
+  height: 30px;
+  border: 0.5px solid blueviolet;
+  border-radius: 3px;
+}
+#list {
+  list-style: none;
+}
+.data-list {
+  border: 0.5px solid grey;
+  /* background-color: aquamarine; */
+  margin: auto;
+}
+#btns {
+  background-color: aliceblue;
+  width: 80px;
+  margin-right: 20px;
+  color:brown;
+  border-radius: 3px;
 }
