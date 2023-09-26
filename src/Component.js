@@ -52,7 +52,7 @@ const ServerData = () => {
 
   return (
     <div className="main">
-      <h1>Json Data</h1>
+      <h1 id="data">Json Data</h1>
       <button onClick={() => setForm(true)}>ADD</button>
 
       {form && (
